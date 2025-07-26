@@ -47,8 +47,14 @@ riscv64-softmmu. Once they are installed, and in your shell
 search path, you can run "make qemu".
 
 ```sh
+
+make clean
+
 make
+
 make qemu
+
+./grade-lab-util sleep  #测试
 
 ctrl + a #转义快捷键
 # x 退出
