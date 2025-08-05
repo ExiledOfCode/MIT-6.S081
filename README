@@ -56,8 +56,12 @@ make qemu
 
 ./grade-lab-util sleep  #测试
 
-ctrl + a #转义快捷键
+# ctrl + a # 转义快捷键
 # x 退出
 # p 显示进程
+
+
+bear -- make clean
+bear -- make qemu
 
 ```
