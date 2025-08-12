@@ -150,12 +150,11 @@ syscall(void)
     // Use num to lookup the system call function for num, call it,
     // and store its return value in p->trapframe->a0
     // printf("%s调用了\n", syscall_names[num - 1]);
+    p->trapframe->a0 = syscalls[num]();
     int trace_mask = p -> trace_mask;
     if((trace_mask >> num) &1){
-      printf("%d syscall %s -> %d\n", p -> pid, syscall_names[num - 1], p -> trapframe -> a0);
+      printf("%d syscall %s -> %d\n", p -> pid, syscall_names[num - 1], p->trapframe->a0);
     }
-    p->trapframe->a0 = syscalls[num]();
-
   } else {
     printf("%d %s: unknown sys call %d\n",
             p->pid, p->name, num);
