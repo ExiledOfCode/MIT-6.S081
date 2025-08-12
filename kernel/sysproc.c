@@ -5,7 +5,6 @@
 #include "memlayout.h"
 #include "spinlock.h"
 #include "proc.h"
-#include <stdio.h>
 
 uint64
 sys_exit(void)
@@ -95,6 +94,6 @@ sys_uptime(void)
 
 uint64
 sys_trace(void){
-  printf(0);
+  printf("const char *, ...");
   return 0;
 }
