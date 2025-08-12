@@ -304,7 +304,7 @@ fork(void)
   np->trapframe->a0 = 0;
 
   //copy trace_mask in the child
-  np->trace_mask=p->trace_mask;
+  np->trace_mask = p->trace_mask;
 
   // increment reference counts on open file descriptors.
   for(i = 0; i < NOFILE; i++)
