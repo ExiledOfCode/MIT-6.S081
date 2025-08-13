@@ -21,6 +21,7 @@
 #define SYS_mkdir 20
 #define SYS_close 21
 #define SYS_trace 22
+#define SYS_sysinfo 23
 
 // 问题1:为什么系统调用使用二进制左移，而不是使用整数
 /*
