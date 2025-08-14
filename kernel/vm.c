@@ -45,7 +45,7 @@ kvmmake(void)
 
   // allocate and map a kernel stack for each process.
   proc_mapstacks(kpgtbl);
-  
+
   return kpgtbl;
 }
 
@@ -154,7 +154,7 @@ mappages(pagetable_t pagetable, uint64 va, uint64 size, uint64 pa, int perm)
 
   if(size == 0)
     panic("mappages: size");
-  
+
   a = va;
   last = va + size - PGSIZE;
   for(;;){
@@ -345,7 +345,7 @@ void
 uvmclear(pagetable_t pagetable, uint64 va)
 {
   pte_t *pte;
-  
+
   pte = walk(pagetable, va, 0);
   if(pte == 0)
     panic("uvmclear");
@@ -448,4 +448,21 @@ copyinstr(pagetable_t pagetable, char *dst, uint64 srcva, uint64 max)
   } else {
     return -1;
   }
+}
+
+void vmprint(pagetable_t pagetable, int depth) {
+    // 遍历所有512个PTE
+    if(depth > 2)
+      return ;
+    if(depth == 0)
+      printf("page table %p\n", pagetable);
+    for(int i = 0; i < 512; i++) {
+        pte_t pte = pagetable[i];
+        if(pte & PTE_V) {
+          for(int i = 0;i <= depth ;i++)
+            printf(" ..");
+          printf("%d: pte %p pa %p\n", i, pte, PTE2PA(pte));
+          vmprint((pagetable_t)PTE2PA(pte), depth + 1);
+        }
+    }
 }
