@@ -71,8 +71,21 @@ void usertrap(void) {
         exit(-1);
 
     // give up the CPU if this is a timer interrupt.
-    if (which_dev == 2)
+    if (which_dev == 2) {
+        if (p->ticks > 0 && p->handler_executing == 0) {
+            p->ticks_cnt++;
+            if (p->ticks_cnt >= p->ticks) {
+                // 1. 先完整保存当前 trapframe
+                memmove(&p->tick_trapframe, p->trapframe,
+                        sizeof(struct trapframe));
+                // 2. 再修改 epc 跳转
+                p->trapframe->epc = p->handler;
+                p->handler_executing = 1;
+                p->ticks_cnt = 0;
+            }
+        }
         yield();
+    }
 
     usertrapret();
 }

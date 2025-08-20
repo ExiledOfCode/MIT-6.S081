@@ -76,3 +76,26 @@ uint64 sys_uptime(void) {
     release(&tickslock);
     return xticks;
 }
+
+uint64 sys_sigalarm() {
+
+    int ticks;
+    uint64 handler;
+    argint(0, &ticks);
+    argaddr(1, &handler);
+
+    struct proc *p = myproc();
+    p->ticks = ticks;
+    p->handler = handler;
+    p->ticks_cnt = 0;
+
+    return 0;
+}
+
+uint64 sys_sigreturn() {
+    struct proc *p = myproc();
+    memmove(p->trapframe, &p->tick_trapframe, sizeof(struct trapframe));
+    p->ticks_cnt = 0;         // 重置计数器
+    p->handler_executing = 0; // 清除执行标志
+    return p->trapframe->a0;
+}
